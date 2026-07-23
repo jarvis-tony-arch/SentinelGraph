@@ -36,28 +36,25 @@ def analyze_datasets(df):
     """
     Perform basic analysis on the authentication logs.
     """
+    print("\n" + "=" * 60)
+    print("      SentinelGraph  Security Report")
+    print("=" * 60)
 
-    print("\n========== Dataset Statistics ==========")
-    print(f"\nTotal Events : {len(df)}")
-    print(f"Unique Source Users : {df['source_user'].nunique()}")
+    print(f"\nTotal Authentication Events : {len(df)}")
+    print("-" * 40)
+    print(f"Unique Source Users      : {df['source_user'].nunique()}")
     print(f"Unique Destination Users : {df['destination_user'].nunique()}")
-    print(f"Unique Source Computers : {df['source_computer'].nunique()}")
+    print("\nComputer")
+    print("-" * 40)
+    print(f"Unique Source Computers    : {df['source_computer'].nunique()}")
     print(f"Unique Destination Computers : {df['destination_computer'].nunique()}")
-    print("\nAuthentication Types:")
+    print("\nAuthentication Methods")
+    print("-" * 40)
     print(df["authentication_type"].value_counts())
-    print("\nLogin Status:")
+    print("\nLogin Status")
+    print("-" * 40)
     print(df["status"].value_counts())
-    print("\nTop 10 Source Users:")
-    print(df["source_user"].value_counts().head(10))
-
-    print("\nTop 10 Destination Users:")
-    print(df["destination_user"].value_counts().head(10))
-
-    print("\nTop 10 Source Computers:")
-    print(df["source_computer"].value_counts().head(10))
-
-    print("\nTop 10 Destination Computers:")
-    print(df["destination_computer"].value_counts().head(10))
+    print("\n" + "=" * 60)
 
 def main():
     print("=" * 50)
