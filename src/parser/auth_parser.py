@@ -55,6 +55,48 @@ def analyze_datasets(df):
     print("-" * 40)
     print(df["status"].value_counts())
     print("\n" + "=" * 60)
+    print("\nTop 10 source users")
+    print("-" * 40)
+    print(df["source_user"].value_counts().head(10))
+    print("\nTop 10 destination users")
+    print("-" * 40)
+    print(df["destination_user"].value_counts().head(10))
+    print("\nTop 10 Source Computers")
+    print("-" * 40)
+    print(df["source_computer"].value_counts().head(10))
+    print("\nTop 10 Destination Computers")
+    print("-" * 40)
+    print(df["destination_computer"].value_counts().head(10))
+
+    print("\nTop 10 failed login Users")
+    print("-" * 40)
+    failed_logins = df[df["status"] == "Fail"]
+    print(failed_logins["source_user"].value_counts().head(10))
+    print("\nPotential Suspicious Users")
+    print("-" * 40)
+    failed_counts = failed_logins["source_user"].value_counts() 
+    suspicious_users = failed_counts[failed_counts >= 5]
+    if suspicious_users.empty:
+
+        print("No suspicious users detected.")
+    else:
+
+        for user, count in suspicious_users.items():
+           if count >= 20:
+            severity = "🔴 CRITICAL"
+
+           elif count >= 10:
+            severity = "🟠 HIGH"
+
+           else:
+            severity = "🟡 MEDIUM"
+
+            print("=" * 50)
+            print("🚨 SECURITY ALERT")
+            print(f"Severity    : {severity}")
+            print(f"User          : {user}")
+            print(f"Failed Logins : {count}")
+            print("Reason        : Exceeded failed login threshold (5)")
 
 def main():
     print("=" * 50)
