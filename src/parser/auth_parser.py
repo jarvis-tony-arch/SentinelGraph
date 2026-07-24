@@ -1,6 +1,6 @@
 import pandas as pd
 from src.config.settings import AUTH_LOG_FILE
-
+from src.features.user_features import build_user_features
 
 def validate_auth_file():
     """
@@ -105,6 +105,7 @@ def main():
     validate_auth_file()
     df = read_sample()
     analyze_datasets(df)
+    build_user_features(df)
 
 
 
