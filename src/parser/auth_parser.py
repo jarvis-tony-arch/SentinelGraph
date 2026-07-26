@@ -1,6 +1,7 @@
 import pandas as pd
 from src.config.settings import AUTH_LOG_FILE
 from src.features.user_features import build_user_features
+from src.models.anomaly_detector import train_anomaly_detector
 
 def validate_auth_file():
     """
@@ -105,7 +106,9 @@ def main():
     validate_auth_file()
     df = read_sample()
     analyze_datasets(df)
-    build_user_features(df)
+    user_features = build_user_features(df)
+
+    model, scaler = train_anomaly_detector(user_features)
 
 
 

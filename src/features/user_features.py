@@ -28,13 +28,33 @@ def build_user_features(df):
     unique_computers = (
             df.groupby("source_user")["source_computer"]
             .nunique()
-            .reset_index(name="unique_computers ")
+            .reset_index(name="unique_computers")
         )
+    unique_destination_computers = (
+            df.groupby("source_user")["destination_computer"]
+            .nunique()
+            .reset_index(name="unique_destination_computers")
+    )
+    authentication_methods = (
+        df.groupby("source_user")["authentication_type"]
+        .nunique()
+        .reset_index(name="unique_authentication_methods")
+    )
     user_features = user_features.merge(
         success_counts,
         on="source_user",
         how="left"
     )
+    user_features = user_features.merge(
+        authentication_methods,
+        on="source_user",
+        how="left"
+    )
+    user_features = user_features.merge(
+        unique_destination_computers,
+        on="source_user",
+        how="left"
+    ) 
 
     user_features = user_features.merge(
             failed_counts,
@@ -52,6 +72,11 @@ def build_user_features(df):
         user_features["failed_events"] /
         user_features["total_events"]
     ) * 100
+    user_features["risk_score"] = (
+        user_features["failed_events"] * 5
+        + user_features["failure_rate"] * 2
+        + user_features["unique_computers"] * 3
+    )
 
     
 
