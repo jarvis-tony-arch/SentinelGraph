@@ -33,6 +33,30 @@ def train_anomaly_detector(user_features):
     )
     model.fit(X_scaled)
     print("\nIsolation Forest Model Trained Successfuly !")
-    return model, scaler
+    predictions = model.predict(X_scaled)
+    user_features["prediction"]=predictions
+    print("\nprediction Summary")
+    print("-" * 40)
+    print(
+        user_features["prediction"]
+        .value_counts()
+    )
+    print("\n AI Detection Anomaies")
+    print("-" * 40)
+    anomalies = user_features[
+        user_features["prediction"] == -1
+    ]
+    print(
+        anomalies[
+            [
+                "source_user",
+                "failed_events",
+                "failure_rate",
+                "risk_score"
+            ]
+        ].head(10)
+    )
+
+    return model,scaler
 
 
